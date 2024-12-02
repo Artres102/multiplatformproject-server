@@ -1,7 +1,7 @@
 // NODE MODULES REQUIRED
 const express = require("express");
 const session = require('express-session')
-// const connection = require('./database');
+const connection = require('./database');
 
 
 // PORT VARIABLES
@@ -14,13 +14,13 @@ app.use(express.static('www'));
 app.use(express.urlencoded({extended:true}));
 
 // DATABASE CONNECTION
-// connection.connect((err) => {
-//     if (err){
-//         console.log("Failed to connect to the DB");
-//         return;
-//     };
-//     console.log("Connected to Database!")
-// });
+connection.connect((err) => {
+    if (err){
+        console.log("Failed to connect to the DB");
+        return;
+    };
+    console.log("Connected to Database!")
+});
 
 //cookers
 app.use(session({
@@ -34,7 +34,16 @@ app.use(session({
 
 // ENDPOINTS
 app.get("/", (req,res) => {
-    res.redirect("/home.html")
+    connection.execute("SELECT * FROM osc_room",
+        [],
+        function (err, results){
+            if (err){
+                return err;
+            } else {
+                res.send(results);
+            }
+        }
+    )
 });
 
 // SERVER CONNECTION
