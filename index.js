@@ -1,10 +1,12 @@
 // NODE MODULES REQUIRED
 const express = require("express");
-const session = require('express-session')
+const session = require('express-session');
 const connection = require('./database');
 
 //FILES REQUIRED
-const rooms = require("./API/rooms")
+const rooms = require("./API/rooms");
+const game = require("./API/session");
+const frequency = require("./API/frequency");
 
 
 // PORT VARIABLES
@@ -22,7 +24,7 @@ connection.connect((err) => {
         console.log("Failed to connect to the DB");
         return;
     };
-    console.log("Connected to Database!")
+    console.log("Connected to Database!");
 });
 
 //cookers
@@ -50,6 +52,8 @@ app.get("/", (req,res) => {
 });
 
 app.use("/room", rooms);
+app.use("/game", game);
+app.use("/frequency", frequency);
 
 // SERVER CONNECTION
 app.listen(serverPort, () => {

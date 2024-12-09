@@ -14,7 +14,7 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
                 return err;
             }
             roomId = results[0].gamesession_current_room_id;
-            console.log(roomId);
+            
             res.json(roomId)
         }
     )
