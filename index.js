@@ -3,6 +3,9 @@ const express = require("express");
 const session = require('express-session')
 const connection = require('./database');
 
+//FILES REQUIRED
+const rooms = require("./API/rooms")
+
 
 // PORT VARIABLES
 const serverPort = 3000;
@@ -45,6 +48,8 @@ app.get("/", (req,res) => {
         }
     )
 });
+
+app.use("/room", rooms);
 
 // SERVER CONNECTION
 app.listen(serverPort, () => {
