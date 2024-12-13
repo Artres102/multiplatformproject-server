@@ -7,7 +7,7 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
     var sessionId = req.params.sessionId;
     var roomId;
 
-    connection.execute("SELECT gamesession_current_room_id FROM osc_game_session WHERE gamesession_id = ?",
+    connection.execute("SELECT room_name FROM osc_game_session INNER JOIN osc_room ON gamesession_current_room_id = room_id WHERE gamesession_id = ?",
         [sessionId],
         function (err,results) {
             if (err) {

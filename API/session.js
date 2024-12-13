@@ -12,6 +12,10 @@ router.get("/checkCode/:code", (req,res) => {
             if (err) {
                 return console.log(err);
             }
+
+            if (results.length <= 0) {
+                return res.json("Invalid Code!")
+            }
             var sessionId = results[0].gamesession_id;
 
             res.json(sessionId);
