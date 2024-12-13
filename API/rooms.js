@@ -21,10 +21,9 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
 });
 
 //This one CHANGES the room you're in
-router.get("/changeCurrentRoom/:sessionId/:roomId", (req,res) => {
+router.put("/changeCurrentRoom/:sessionId/:roomId", (req,res) => {
     var sessionId = req.params.sessionId;
-    var roomId = req.params.roomId;
-
+    var roomId = req.params.roomId
     connection.execute("UPDATE osc_game_session SET gamesession_current_room_id = ? WHERE gamesession_id = ?",
         [roomId,sessionId],
         function (err,results) {
