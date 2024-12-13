@@ -12,26 +12,27 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
         function (err,results) {
             if (err) {
                 return err;
-            }
+            };
             roomId = results[0].gamesession_current_room_id;
             
-            res.json(roomId)
+            res.json(roomId);
         }
-    )
+    );
 });
 
 //This one CHANGES the room you're in (Used by game)
 router.put("/changeCurrentRoom/:sessionId/:roomId", (req,res) => {
     var sessionId = req.params.sessionId;
-    var roomId = req.params.roomId
+    var roomId = req.params.roomId;
+
     connection.execute("UPDATE osc_game_session SET gamesession_current_room_id = ? WHERE gamesession_id = ?",
         [roomId,sessionId],
         function (err,results) {
             if (err) {
                 return err;
-            }
+            };
         }
-    )
+    );
 });
 
 module.exports = router;
