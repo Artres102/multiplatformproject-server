@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const connection = require('../database');
 
-//This one gets the room you're in
+//This one gets the room you're in (Used by app)
 router.get("/getCurrentRoom/:sessionId", (req, res) => {
     var sessionId = req.params.sessionId;
     var roomId;
@@ -20,7 +20,7 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
     )
 });
 
-//This one CHANGES the room you're in
+//This one CHANGES the room you're in (Used by game)
 router.put("/changeCurrentRoom/:sessionId/:roomId", (req,res) => {
     var sessionId = req.params.sessionId;
     var roomId = req.params.roomId
