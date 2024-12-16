@@ -24,31 +24,45 @@ router.get("/checkCode/:code", (req,res) => {
 });
 
 // Create the session in the Game Session table (Used in game)
-router.get("/createSession", (req,res) => {
+router.post("/createSession", (req,res) => {
     var code = generateCode();
 
-    connection.execute("SELECT gamesession_code FROM osc_game_session WHERE gamesession_code = ?",
-        [code],
-        function (err,results) {
+    connection.execute("SELECT max(gamesession_id) AS currentId FROM osc_game_session",
+        [],
+        function (err, results) {
             if (err) {
                 return console.log(err)
-            };
+            }
+            var currentId = results[0].currentId + 1
 
-            if (results.length > 0) {
-                res.redirect("/game/createSession")
-            };
-
-            connection.execute("INSERT INTO osc_game_session(gamesession_code,gamesession_current_room_id) VALUES(?,'1')",
+            connection.execute("SELECT gamesession_code FROM osc_game_session WHERE gamesession_code = ?",
                 [code],
-                function(err) {
+                function (err,rows) {
                     if (err) {
                         return console.log(err)
                     };
-                    res.json("Code Generated!");
+        
+                    if (rows.length > 0) {
+                        res.redirect("./createSession");
+                    };
+        
+                    connection.execute("INSERT INTO osc_game_session(gamesession_code,gamesession_current_room_id) VALUES(?,'1')",
+                        [code],
+                        function(err) {
+                            if (err) {
+                                return console.log(err);
+                            };
+                            var data = {
+                                "code": code,
+                                "sessionId": currentId
+                            }
+                            res.json(data);
+                        }
+                    );
                 }
             );
         }
-    );
+    )
 })
 
 //Generate Connection Code
