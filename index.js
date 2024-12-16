@@ -45,7 +45,7 @@ app.get("/", (req,res) => {
             if (err){
                 return err;
             } else {
-                res.send(results);
+                res.json("Hello World");
             }
         }
     )
