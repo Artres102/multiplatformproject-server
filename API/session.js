@@ -52,10 +52,14 @@ router.post("/createSession", (req,res) => {
                             if (err) {
                                 return console.log(err);
                             };
+
                             var data = {
                                 "code": code,
                                 "sessionId": currentId
-                            }
+                            };
+
+                            createInputList(currentId);
+
                             res.json(data);
                         }
                     );
@@ -77,6 +81,29 @@ function generateCode() {
     };
 
     return code;
+}
+
+function createInputList(sessionId) {
+    connection.execute("SELECT COUNT(*) AS rooms FROM osc_room",
+        [],
+        function (err, results) {
+            if (err) {
+                return console.log(err);
+            };
+            var maxRooms = results[0].rooms;
+
+            for (i = 1; i <= maxRooms; i++) {
+                connection.execute("INSERT INTO osc_input(input_gamesession_id,input_room_id,input_isdone) VALUES(?,?,false)",
+                    [sessionId,i],
+                    function (err) {
+                        if (err) {
+                            return console.log(err);
+                        };
+                    }
+                );
+            };
+        }
+    )
 }
 
 module.exports = router;
