@@ -3,6 +3,7 @@ const router = express.Router();
 const connection = require('../database');
 
 // Gets the frequency of the building you're in based on the current room you're in (Used by App)
+//How to connect: (hostURL)/frequency/getFrequency/sessionId/roomId (Where sessionId and roomId are equal to a valid sessionId or roomId in the Database)
 router.get("/getFrequency/:sessionId/:roomId", (req,res) => {
     var roomId = req.params.roomId;
     var sessionId = req.params.sessionId;
@@ -35,6 +36,7 @@ router.get("/getFrequency/:sessionId/:roomId", (req,res) => {
 });
 
 // Inputs the action on the current room (Used by App)
+//How to connect: (hostURL)/frequency/doInput/sessionId (Where sessionId is equal to a valid sessionId in the Database)
 router.put("/doInput/:sessionId/", (req,res) => {
     var sessionId = req.params.sessionId;
 

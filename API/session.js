@@ -3,6 +3,7 @@ const router = express.Router();
 const connection = require('../database');
 
 // Gets session by code (Used by app)
+//How to connect: (hostURL)/game/checkCode/code (Where code is a valid 5 character/digit long code)
 router.get("/checkCode/:code", (req,res) => {
     var code = req.params.code;
 
@@ -24,6 +25,7 @@ router.get("/checkCode/:code", (req,res) => {
 });
 
 // Create the session in the Game Session table (Used in game)
+//How to connect: (hostURL)/game/createSession
 router.post("/createSession", (req,res) => {
     var code = generateCode();
 
@@ -75,7 +77,7 @@ function generateCode() {
     let maxCodeLength = 5;
     let code = '';
     
-    for (i = 0; i < maxCodeLength; i++) {
+    for (i = 1; i <= maxCodeLength; i++) {
         var randomIndex = Math.floor(Math.random() * characters.length);
         code += characters[randomIndex];
     };
@@ -83,6 +85,7 @@ function generateCode() {
     return code;
 }
 
+//Automatically Inserts all room inputs in the database for the session in question
 function createInputList(sessionId) {
     connection.execute("SELECT COUNT(*) AS rooms FROM osc_room",
         [],

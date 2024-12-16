@@ -3,6 +3,7 @@ const router = express.Router();
 const connection = require('../database');
 
 //This one gets the room you're in (Used by app)
+//How to connect: (hostURL)/room/getCurrentRoom/sessionId (Where sessionId is equal to a valid sessionId in the Database)
 router.get("/getCurrentRoom/:sessionId", (req, res) => {
     var sessionId = req.params.sessionId;
     var roomId;
@@ -21,6 +22,7 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
 });
 
 //This one CHANGES the room you're in (Used by game)
+//How to connect: (hostURL)/room/changeCurrentRoom/sessionId/roomId (Where sessionId and roomId are equal to a valid sessionId or roomId in the Database)
 router.put("/changeCurrentRoom/:sessionId/:roomId", (req,res) => {
     var sessionId = req.params.sessionId;
     var roomId = req.params.roomId;
@@ -35,6 +37,8 @@ router.put("/changeCurrentRoom/:sessionId/:roomId", (req,res) => {
     );
 });
 
+//Checks if an Input was done in this room (Used by Game)
+//How to connect: (hostURL)/room/checkInput/sessionId (Where sessionId is equal to the ID of a valid sessionId in the Database)
 router.get("/checkInput/:sessionId", (req,res) => {
     var sessionId = req.params.sessionId;
 
