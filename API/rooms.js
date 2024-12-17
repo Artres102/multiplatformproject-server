@@ -14,7 +14,7 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
             if (err) {
                 return err;
             };
-            roomId = results[0].gamesession_current_room_id;
+            roomId = results[0].room_name;
             console.log("CONAS")
             res.send({
                 "message": roomId
