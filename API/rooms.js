@@ -15,7 +15,7 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
                 return err;
             };
             roomName = results[0].room_name;
-            res.json(roomName)
+            res.send(roomName)
         }
     );
 });
