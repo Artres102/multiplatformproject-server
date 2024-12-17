@@ -7,6 +7,7 @@ const connection = require('./database');
 const rooms = require("./API/rooms");
 const game = require("./API/session");
 const frequency = require("./API/frequency");
+const input = require("./API/input")
 
 
 // PORT VARIABLES
@@ -54,6 +55,7 @@ app.get("/", (req,res) => {
 app.use("/room", rooms);
 app.use("/game", game);
 app.use("/frequency", frequency);
+app.use("/input", input);
 
 // SERVER CONNECTION
 app.listen(serverPort, () => {
