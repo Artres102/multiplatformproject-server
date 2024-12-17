@@ -14,8 +14,9 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
             if (err) {
                 return err;
             };
-            roomName = results[0].room_name;
-            res.send(roomName)
+            roomId = results[0].room_name;
+            console.log("CONAS")
+            res.json(roomId)
         }
     );
 });
