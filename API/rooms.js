@@ -14,7 +14,7 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
             if (err) {
                 return err;
             };
-            roomName = results[0].room_name;
+            roomId = results[0].room_name;
             res.json(roomId)
         }
     );
