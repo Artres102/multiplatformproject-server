@@ -6,7 +6,6 @@ const connection = require('../database');
 //How to connect: (hostURL)/room/getCurrentRoom/sessionId (Where sessionId is equal to a valid sessionId in the Database)
 router.get("/getCurrentRoom/:sessionId", (req, res) => {
     var sessionId = req.params.sessionId;
-    var roomId;
 
     connection.execute("SELECT room_name FROM osc_game_session INNER JOIN osc_room ON gamesession_current_room_id = room_id WHERE gamesession_id = ?",
         [sessionId],
@@ -14,9 +13,9 @@ router.get("/getCurrentRoom/:sessionId", (req, res) => {
             if (err) {
                 return err;
             };
-            roomId = results[0].room_name;
+            var roomName = results[0].room_name;
             console.log("CONAS")
-            res.json(roomId)
+            res.json(roomName)
         }
     );
 });
