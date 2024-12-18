@@ -85,7 +85,7 @@ router.put("/resetCurrentSession/:sessionId", (req,res) => {
             };
 
             resetInputs(sessionId);
-            resetFrequencies(sessionId);
+            checkFrequencies(sessionId);
         }
     );
 });
@@ -167,7 +167,7 @@ function generateFrequencies(sessionId) {
             var minFrequency = 50;
             for (i = 1; i <= buildingCount; i++) {
             
-                var frequency = Math.floor(Math.random() * (maxFrequency - minFrequency + 1)) + min;
+                var frequency = Math.floor(Math.random() * (maxFrequency - minFrequency + 1)) + minFrequency;
 
                 connection.execute("INSERT INTO osc_frequency(frequency_building_id,frequency_session_id,frequency_to_match) VALUES (?,?,?)",
                     [i,sessionId,frequency],
@@ -182,6 +182,24 @@ function generateFrequencies(sessionId) {
     );
 };
 
+//Checks if a session has generated frequencies
+function checkFrequencies(sessionId) {
+    connection.execute("SELECT * FROM osc_frequency WHERE frequency_session_id = ?",
+        [sessionId],
+        function (err,results) {
+            if (err) {
+                return console.log(err);
+            };
+            if (results.length > 0) {
+                resetFrequencies(sessionId)
+            } else {
+                generateCode(sessionId)
+            };
+        }
+    );
+};
+
+// Resets all Frequencies for a session
 function resetFrequencies(sessionId) {
     connection.execute("SELECT COUNT(*) AS countBuildings FROM osc_building",
         [],
@@ -194,7 +212,7 @@ function resetFrequencies(sessionId) {
             var maxFrequency = 120;
             var minFrequency = 50;
             for (i = 1; i <= buildingCount; i++) {
-                var frequency = Math.floor(Math.random() * (maxFrequency - minFrequency + 1)) + min;
+                var frequency = Math.floor(Math.random() * (maxFrequency - minFrequency + 1)) + minFrequency;
                 connection.execute("UPDATE osc_frequency SET frequency_to_match = ? WHERE frequency_session_id = ? AND frequency_building_id = ?",
                     [frequency,sessionId,i],
                     function (err) {
