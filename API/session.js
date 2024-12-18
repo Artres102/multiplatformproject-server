@@ -193,7 +193,7 @@ function checkFrequencies(sessionId) {
             if (results.length > 0) {
                 resetFrequencies(sessionId)
             } else {
-                generateCode(sessionId)
+                generateFrequencies(sessionId)
             };
         }
     );
