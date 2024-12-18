@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const connection = require('../database');
 
-// Gets session by code (Used by app)
+// Gets session by code (Used by app).
 //How to connect: (hostURL)/game/checkCode/code (Where code is a valid 5 character/digit long code)
 router.get("/checkCode/:code", (req,res) => {
     var code = req.params.code;
@@ -73,7 +73,7 @@ router.post("/createSession", (req,res) => {
 });
 
 //Resets all inputs for a session (Used by Game)
-//How to connect: (hostURL)/game/resetInput/sessionId (Where sessionId is equal to the ID of a valid sessionId in the Database)
+//How to connect: (hostURL)/game/resetCurrentSession/sessionId (Where sessionId is equal to the ID of a valid sessionId in the Database)
 router.put("/resetCurrentSession/:sessionId", (req,res) => {
     var sessionId = req.params.sessionId;
 
