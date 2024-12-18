@@ -59,32 +59,4 @@ router.get("/checkInput/:sessionId", (req,res) => {
     );
 });
 
-//Resets all inputs for a session (Used by Game)
-//How to connect: (hostURL)/input/resetInput/sessionId (Where sessionId is equal to the ID of a valid sessionId in the Database)
-router.get("/resetInput/:sessionId", (req,res) => {
-    var sessionId = req.params.sessionId;
-
-    connection.execute("SELECT COUNT(*) AS maxRooms FROM osc_room",
-        [],
-        function (err, results) {
-            if (err) {
-                return console.log(err);
-            };
-
-            var maxRooms = results[0].maxRooms;
-
-            for (i = 1; i <= maxRooms; i++) {
-                connection.execute("UPDATE osc_input SET input_isdone = 0 WHERE input_room_id = ? AND input_gamesession_id = ?",
-                    [i,sessionId],
-                    function (err) {
-                        if (err) {
-                            return console.log(err);
-                        };
-                    }
-                );
-            };
-        }
-    );
-});
-
 module.exports = router;
