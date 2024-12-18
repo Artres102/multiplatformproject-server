@@ -76,7 +76,7 @@ router.post("/createSession", (req,res) => {
 router.put("/resetCurrentSession/:sessionId", (req,res) => {
     var sessionId = req.params.sessionId;
 
-    connection.execute("UPDATE osc_session SET gamesession_current_room_id = 1 WHERE gamesession_id = ?",
+    connection.execute("UPDATE osc_game_session SET gamesession_current_room_id = 1 WHERE gamesession_id = ?",
         [sessionId],
         function (err) {
             if (err) {
