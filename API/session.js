@@ -61,6 +61,7 @@ router.post("/createSession", (req,res) => {
                             };
 
                             createInputList(currentId);
+                            generateFrequencies(currentId);
 
                             res.json(data);
                         }
@@ -84,10 +85,12 @@ router.put("/resetCurrentSession/:sessionId", (req,res) => {
             };
 
             resetInputs(sessionId);
+            resetFrequencies(sessionId);
         }
     );
 });
 
+// Makes all of the inputs become false
 function resetInputs(sessionId) {
     connection.execute("SELECT COUNT(*) AS maxRooms FROM osc_room",
         [],
@@ -147,7 +150,62 @@ function createInputList(sessionId) {
                 );
             };
         }
-    )
-}
+    );
+};
+
+// Generates all the frequencies for the database
+function generateFrequencies(sessionId) {
+    connection.execute("SELECT COUNT(*) AS countBuildings FROM osc_building",
+        [],
+        function (err, results) {
+            if (err) {
+                return console.log(err)
+            }
+            var buildingCount = results[0].countBuildings;
+
+            var maxFrequency = 120;
+            var minFrequency = 50;
+            for (i = 1; i <= buildingCount; i++) {
+            
+                var frequency = Math.floor(Math.random() * (maxFrequency - minFrequency + 1)) + min;
+
+                connection.execute("INSERT INTO osc_frequency(frequency_building_id,frequency_session_id,frequency_to_match) VALUES (?,?,?)",
+                    [i,sessionId,frequency],
+                    function (err) {
+                        if (err) {
+                            return console.log(err);
+                        };
+                    }
+                );
+            };
+        }
+    );
+};
+
+function resetFrequencies(sessionId) {
+    connection.execute("SELECT COUNT(*) AS countBuildings FROM osc_building",
+        [],
+        function (err, results) {
+            if (err) {
+                return console.log(err)
+            }
+            var buildingCount = results[0].countBuildings;
+
+            var maxFrequency = 120;
+            var minFrequency = 50;
+            for (i = 1; i <= buildingCount; i++) {
+                var frequency = Math.floor(Math.random() * (maxFrequency - minFrequency + 1)) + min;
+                connection.execute("UPDATE osc_frequency SET frequency_to_match = ? WHERE frequency_session_id = ? AND frequency_building_id = ?",
+                    [frequency,sessionId,i],
+                    function (err) {
+                        if (err) {
+                            return console.log(err);
+                        };
+                    }
+                )
+            }
+        }
+    );
+};
 
 module.exports = router;
