@@ -6,16 +6,21 @@ const connection = require('../database');
 //How to connect: (hostURL)/room/getCurrentRoom/sessionId (Where sessionId is equal to a valid sessionId in the Database)
 router.get("/getCurrentRoom/:sessionId", (req, res) => {
     var sessionId = req.params.sessionId;
-    var roomId;
+    var roomName;
 
-    connection.execute("SELECT room_name FROM osc_game_session INNER JOIN osc_room ON gamesession_current_room_id = room_id WHERE gamesession_id = ?",
+    connection.execute("SELECT room_name,room_id FROM osc_game_session INNER JOIN osc_room ON gamesession_current_room_id = room_id WHERE gamesession_id = ?",
         [sessionId],
         function (err,results) {
             if (err) {
                 return err;
             };
-            roomId = results[0].room_name;
-            res.json(roomId)
+            roomName = results[0].room_name;
+            roomId = results[0].room_id
+            var data = {
+                "roomName": roomName,
+                "roomId": roomId
+            }
+            res.json(data)
         }
     );
 });
